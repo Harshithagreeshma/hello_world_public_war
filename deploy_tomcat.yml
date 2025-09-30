@@ -25,6 +25,11 @@
       state: directory
       mode: 0777
 
+  - name: check if old war exists
+    stat:
+      path: /opt/tomcat/webapps/webapp.war
+    register: war_stat
+
   - name: backup file with owner and permissions
     copy:
       src: /opt/tomcat/webapps/webappnew.war
