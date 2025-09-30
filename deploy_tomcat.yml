@@ -35,8 +35,7 @@
       src: /opt/tomcat/webapps/webapp.war
       dest: /home/ubuntu/backup/webapp.war
       remote_src: yes
-      when: war_stat.stat.exists
-
+      
   - name: Delete remote war file
     file:
       path: /opt/tomcat/webapps/webapp.war
