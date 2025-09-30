@@ -3,14 +3,13 @@
   become: yes
   vars:
     build_number: '{{ BUILD_NUMBER }}'
-  #become_user: tomcat
   tasks:
 
   - name: create directory 
-    file:
+    ansible.builtin.file:
       path: /home/ubuntu/sourcefile
       state: directory
-      mode: 0777
+      mode: '0777'
 
   - name: download war file
     ansible.builtin.get_url:
@@ -20,31 +19,30 @@
       password: Harshitha@123
 
   - name: create directory for backup
-    file: 
+    ansible.builtin.file: 
       path: /home/ubuntu/backup
       state: directory
-      mode: 0777
+      mode: '0777'
 
   - name: check if old war exists
-    stat:
+    ansible.builtin.stat:
       path: /opt/tomcat/webapps/webapp.war
     register: war_stat
 
   - name: backup file with owner and permissions
-  ansible.builtin.copy:
-    src: /opt/tomcat/webapps/webapp.war
-    dest: /home/ubuntu/backup/webapp.war
-    remote_src: yes
-  when: war_stat.stat.exists
+    ansible.builtin.copy:
+      src: /opt/tomcat/webapps/webapp.war
+      dest: /home/ubuntu/backup/webapp.war
+      remote_src: yes
+    when: war_stat.stat.exists
 
-      
-  - name: Delete remote war file
-    file:
+  - name: delete remote war file
+    ansible.builtin.file:
       path: /opt/tomcat/webapps/webapp.war
       state: absent
 
   - name: deploy file with owner and permissions
-    copy:
+    ansible.builtin.copy:
       src: /home/ubuntu/sourcefile/webapp.war
       dest: /opt/tomcat/webapps/webappnew.war
       remote_src: yes
